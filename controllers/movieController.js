@@ -31,6 +31,7 @@ function show(req, res) {
 
         // creazione oggetto movie
         const singleMovie = movieResult[0];
+        singleMovie.image = req.pathImage + singleMovie.image;
 
         connection.query(reviewSql, [id], (err, reviewResult) => {
             if (err) return res.status(500).json({ error: "Database error" });

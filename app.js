@@ -11,9 +11,13 @@ const movieRouter = require("./routers/movieRouter");
 const errorHandler = require("./middlewares/errorHandler");
 const notFound = require("./middlewares/notFound");
 // Aggiunta path image
+const pathImage = require("./middlewares/pathImage");
 
 // Middleware static per cartella public
 app.use(express.static("public"));
+
+// Middleware per path immagini
+app.use(pathImage);
 
 // Body-parser
 app.use(express.json());
