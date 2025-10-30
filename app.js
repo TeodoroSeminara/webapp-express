@@ -8,7 +8,8 @@ const port = 3000;
 const movieRouter = require("./routers/movieRouter");
 
 // Aggiunta middleware
-
+const errorHandler = require("./middlewares/errorHandler");
+const notFound = require("./middlewares/notFound");
 // Aggiunta path image
 
 // Middleware static per cartella public
@@ -26,11 +27,11 @@ app.get("/api", (req, res) => {
     res.send("<h1>Ecco la home della API</h1>")
 })
 
+// Richiamo middleware per errore 404
+app.use(notFound);
 
 // Richiamo middleware per errore server
-
-// Richiamo middleware per errore 404
-
+app.use(errorHandler);
 
 // Ascolto server sulla porta
 app.listen(port, () => {
