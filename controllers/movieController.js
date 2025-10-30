@@ -23,7 +23,24 @@ function show(req, res) {
 
     // Seconda query 
     const reviewSql = `SELECT R.* FROM reviews AS R WHERE movie_id = ? `
+
+    // aggiunta connessione per la richiesta
+    connection.query(movieSql, [id], (err, movieResult) => {
+        if (err) return res.status(500).json({ error: "Database error" });
+        if (movieResult.length === 0) return res.status(404).json({ error: "Movie not found" })
+
+        // creazione oggetto movie
+        const singleMovie = movieResult[0];
+
+        connection.query(reviewSql, [id], (err, reviewResult) => {
+            if (err) return res.status(500).json({ error: "Database error" });
+            singleMovie.reviews = reviewResult;
+
+            // ritorno il risultato 
+            res.json(singleMovie);
+        })
+    })
 }
 
 
-module exports = { index, show }
+module.exports = { index, show }
