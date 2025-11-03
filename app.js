@@ -13,6 +13,12 @@ const notFound = require("./middlewares/notFound");
 // Aggiunta path image
 const pathImage = require("./middlewares/pathImage");
 
+// Import CORS 
+const cors = require("cors");
+app.use(cors({
+    origin: "http://localhost:5173/"
+}));
+
 // Middleware static per cartella public
 app.use(express.static("public"));
 
