@@ -9,7 +9,15 @@ function index(req, res) {
     // Esecuzione query
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: "Database query failed" });
-        res.json(results);
+
+        // lista movie con image
+        const movie = results.map(movieImg => {
+            return {
+                ...movieImg,
+                image: req.pathImage + movieImg.image
+            }
+        })
+        res.json(movie);
     })
 };
 
@@ -19,7 +27,12 @@ function show(req, res) {
     const { id } = req.params
 
     // Prima query 
-    const movieSql = `SELECT * FROM movies WHERE id =?`;
+    // const movieSql = `SELECT * FROM movies WHERE id =?`;
+    // Query con richiesta di recensioni 
+    const movieSql = `SELECT M.*, ROUND(AVG(R.vote)) AS average_vote
+    FROM movies AS M
+    LEFT JOIN reviews AS R ON movie_id = M.id
+    WHERE M.id = ?`
 
     // Seconda query 
     const reviewSql = `SELECT R.* FROM reviews AS R WHERE movie_id = ? `

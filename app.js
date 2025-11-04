@@ -16,7 +16,7 @@ const pathImage = require("./middlewares/pathImage");
 // Import CORS 
 const cors = require("cors");
 app.use(cors({
-    origin: "http://localhost:5173/"
+    origin: process.env.FE_HOST
 }));
 
 // Middleware static per cartella public
