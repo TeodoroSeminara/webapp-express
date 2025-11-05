@@ -50,11 +50,34 @@ function show(req, res) {
             if (err) return res.status(500).json({ error: "Database error" });
             singleMovie.reviews = reviewResult;
 
+            // trasforno la stringa del db in numero
+            singleMovie.average_vote = parseInt(singleMovie.average_vote);
+
             // ritorno il risultato 
             res.json(singleMovie);
         })
+    });
+}
+
+// Store review
+
+function postReview(req, res) {
+
+    // id da params
+    const id = req.params.id;
+
+    // dati da prendere dal body
+    const { name, vote, text } = req.body;
+
+    const addReview = ` INSERT INTO reviews ("name", "vote", "text", movie_id) VALUES (?,?,?,?) `;
+
+    // query con check dati
+    connection.query(sql, [name, text, vote, id], (err, result) => {
+        // check error
+        if (err) return res.status(500).json({ error: "Database error" });
+        res.json({ id: result.insertId, message: "Reviews added" });
     })
 }
 
 
-module.exports = { index, show }
+module.exports = { index, show, postReview }

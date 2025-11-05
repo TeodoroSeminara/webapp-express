@@ -9,5 +9,7 @@ const router = express.Router();
 router.get("/", movieController.index)
 // Show
 router.get("/:id", movieController.show)
+// Store
+router.post("/:id/review", movieController.postReview)
 
 module.exports = router;
